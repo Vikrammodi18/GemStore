@@ -20,6 +20,8 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("GemStore"),
+        elevation: 0,
+        scrolledUnderElevation: 0,
         centerTitle: true,
         actions: [Icon(Icons.notifications_none_outlined)],
       ),
@@ -73,6 +75,7 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ],
             ),
+            SizedBox(height: 10),
             Expanded(
               child: IndexedStack(
                 index: category.index,

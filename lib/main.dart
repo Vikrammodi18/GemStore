@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gem_store/bottom_navigation.dart';
 import 'package:gem_store/feature/home/view/home_screen.dart';
 
 void main() {
@@ -15,14 +16,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'GemStore',
       debugShowCheckedModeBanner: false,
-      
+
       theme: ThemeData(
-        appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+        ),
         scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
         fontFamily: "ProductSans",
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
-      home: HomeScreen(),
+      home: BottomNavigationScreen(),
     );
   }
 }
