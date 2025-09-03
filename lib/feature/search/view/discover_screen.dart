@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DiscoverScreen extends StatelessWidget {
   const DiscoverScreen({super.key});
@@ -31,6 +32,10 @@ class DiscoverScreen extends StatelessWidget {
                       elevation: 4,
                       shadowColor: Color(0xffFAFAFA),
                       child: TextFormField(
+                        onTap: () {
+                          context.go("/searchScreen");
+                        },
+                        readOnly: true,
                         style: TextStyle(color: Color(0xff777E90)),
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(

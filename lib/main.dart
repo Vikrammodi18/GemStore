@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gem_store/bottom_navigation.dart';
+import 'package:gem_store/route/router.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -12,7 +13,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       title: 'GemStore',
       debugShowCheckedModeBanner: false,
 
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
         fontFamily: "ProductSans",
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
-      home: BottomNavigationScreen(),
+    
     );
   }
 }
