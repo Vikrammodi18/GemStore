@@ -33,7 +33,7 @@ class DiscoverScreen extends StatelessWidget {
                       shadowColor: Color(0xffFAFAFA),
                       child: TextFormField(
                         onTap: () {
-                          context.go("/searchScreen");
+                          context.push("/searchScreen");
                         },
                         readOnly: true,
                         style: TextStyle(color: Color(0xff777E90)),
