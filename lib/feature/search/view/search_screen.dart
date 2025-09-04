@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gem_store/customWidget/custom_app_bar.dart';
 import 'package:gem_store/feature/search/controller/search_controller.dart';
+import 'package:go_router/go_router.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -60,6 +61,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                               .read(recentSearchProvider.notifier)
                               .addRecentSearch(searchItem);
                           _searchController.text = "";
+                          context.push("/searchedProductScreen");
                         },
                       ),
                     ),

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gem_store/feature/model/searched_product.dart';
 
 final recentSearchProvider = StateNotifierProvider(
   (ref) => RecentSearchNotifier(),
@@ -19,3 +20,5 @@ class RecentSearchNotifier extends StateNotifier<Set<String>> {
     state = {};
   }
 }
+
+final searchedProvider = Provider<List<SearchedProduct>>((ref)=> womenDresses);
