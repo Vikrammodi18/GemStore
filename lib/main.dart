@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gem_store/bottom_navigation.dart';
 import 'package:gem_store/route/router.dart';
 
 void main() {

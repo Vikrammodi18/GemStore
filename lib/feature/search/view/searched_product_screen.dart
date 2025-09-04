@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gem_store/customWidget/custom_app_bar.dart';
 import 'package:gem_store/feature/search/controller/search_controller.dart';
+import 'package:go_router/go_router.dart';
 
 class SearchedProductScreen extends ConsumerWidget {
   // final String titleText;
@@ -11,7 +12,7 @@ class SearchedProductScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final searhedProductList = ref.watch(searchedProvider);
     final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
+    // final w = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: CustomAppBar(context: context, titleText: "Dresses"),
       body: Padding(
@@ -89,70 +90,76 @@ class SearchedProductScreen extends ConsumerWidget {
                 ),
                 itemBuilder: (context, index) {
                   final dress = searhedProductList[index];
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadiusGeometry.circular(10),
-                        child: Stack(
-                          children: [
-                            Image.network(
-                              dress.imgUrl,
-                              height: h * 0.25,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                            Positioned(
-                              top: 5,
-                              right: 5,
-                              child: Material(
-                                elevation: 2,
-                                borderRadius: BorderRadius.circular(50),
-                                child: Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: IconButton(
-                                    color: Colors.red,
-                                    onPressed: () {},
-                                    icon: Icon(Icons.favorite_rounded),
+                  return GestureDetector(
+                    onTap: () {
+                      context.push('/productDetails');
+                    },
+
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadiusGeometry.circular(10),
+                          child: Stack(
+                            children: [
+                              Image.network(
+                                dress.imgUrl,
+                                height: h * 0.25,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                              Positioned(
+                                top: 5,
+                                right: 5,
+                                child: Material(
+                                  elevation: 2,
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: IconButton(
+                                      color: Colors.red,
+                                      onPressed: () {},
+                                      icon: Icon(Icons.favorite_rounded),
+                                    ),
                                   ),
                                 ),
                               ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(dress.name, overflow: TextOverflow.ellipsis),
+                        Text(
+                          "\$ ${dress.price}",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: List.generate(5, (index) {
+                                return Icon(
+                                  index < dress.avgRating.floor()
+                                      ? Icons.star_rounded
+                                      : Icons.star_outline_rounded,
+                                  color: Color(0xff508A7B),
+                                  size: 16,
+                                );
+                              }),
                             ),
+                            Text("(${dress.totalRating})"),
                           ],
                         ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(dress.name, overflow: TextOverflow.ellipsis),
-                      Text(
-                        "\$ ${dress.price}",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: List.generate(5, (index) {
-                              return Icon(
-                                index < dress.avgRating.floor()
-                                    ? Icons.star_rounded
-                                    : Icons.star_outline_rounded,
-                                color: Color(0xff508A7B),
-                                size: 16,
-                              );
-                            }),
-                          ),
-                          Text("(${dress.totalRating})"),
-                        ],
-                      ),
-                    ],
+                      ],
+                    ),
                   );
                 },
               ),
