@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gem_store/customWidget/custom_app_bar.dart';
 import 'package:gem_store/feature/search/controller/search_controller.dart';
@@ -89,7 +88,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   "Recent Search",
                   style: TextStyle(
                     fontSize: 16,
-                    color: Color.fromARGB(255, 68, 65, 63),
+                    fontWeight: FontWeight.w700,
+                    color: Color(0x33302E7D),
                   ),
                 ),
                 IconButton(
@@ -100,7 +100,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   },
                   icon: Icon(
                     Icons.delete_outline_rounded,
-                    color: Color(0xff33302E),
+                    color: Color(0x33302E7A),
                   ),
                 ),
               ],
@@ -109,7 +109,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               builder: (context, ref, child) {
                 final recentHistoryList = ref.watch(recentSearchProvider);
                 return Wrap(
-                  alignment: WrapAlignment.center,
+                  alignment: WrapAlignment.start,
                   runSpacing: 10,
                   spacing: 20,
                   children: recentHistoryList.map((element) {
@@ -119,14 +119,23 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(element),
+                          Text(
+                            element,
+                            style: TextStyle(
+                              color: Color.fromARGB(160, 51, 48, 46),
+                            ),
+                          ),
                           IconButton(
                             onPressed: () {
                               ref
                                   .read(recentSearchProvider.notifier)
                                   .removeRecentSearch(element);
                             },
-                            icon: Icon(Icons.close, size: 18),
+                            icon: Icon(
+                              Icons.close,
+                              size: 18,
+                              color: Color(0xffCCD2E3),
+                            ),
                           ),
                         ],
                       ),
