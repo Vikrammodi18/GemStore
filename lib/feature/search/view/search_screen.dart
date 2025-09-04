@@ -32,6 +32,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     child: Form(
                       key: _formkey,
                       child: TextFormField(
+                        cursorColor: Colors.grey,
+
+                        autofocus: true,
+                        autocorrect: true,
                         controller: _searchController,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(
