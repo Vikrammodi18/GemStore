@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gem_store/customWidget/custom_app_bar.dart';
+
 import 'package:gem_store/feature/search/controller/product_details_controller.dart';
 import 'package:gem_store/feature/search/viewmodel/product_details_provider.dart';
 import 'package:gem_store/feature/search/widget/custom_select_color.dart';
@@ -20,10 +20,37 @@ class _ProductDetailsState extends ConsumerState<ProductDetails> {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     return Scaffold(
+      bottomNavigationBar: Container(
+        height: h * 0.10,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Color(0xff343434),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.shopping_bag_rounded, color: Colors.white),
+              SizedBox(width: 5),
+              Text(
+                "Add To Cart",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
       // appBar: CustomAppBar(titleText: "", context: context),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.network(
               productDetails.imgUrl,
@@ -31,216 +58,229 @@ class _ProductDetailsState extends ConsumerState<ProductDetails> {
               width: w,
               fit: BoxFit.cover,
             ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            productDetails.name,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              productDetails.name,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: List.generate(5, (value) {
+                                return Icon(
+                                  value < productDetails.avgRating
+                                      ? Icons.star_rounded
+                                      : Icons.star_outline_rounded,
+                                  color: Color(0xFF508A7B),
+                                );
+                              }),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          "\$ ${productDetails.price}",
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w700,
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: List.generate(5, (value) {
-                              return Icon(
-                                value < productDetails.avgRating
-                                    ? Icons.star_rounded
-                                    : Icons.star_outline_rounded,
-                                color: Color(0xFF508A7B),
-                              );
-                            }),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        "\$ ${productDetails.price}",
+                        ),
+                      ],
+                    ),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Color",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xff777E90),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Consumer(
+                              builder: (context, ref, child) {
+                                final colorState = ref.watch(colorProvider);
+                                return Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CustomSelectColor(
+                                      color: Colors.yellow,
+                                      isActive: colorState == SelectColor.yellow
+                                          ? true
+                                          : false,
+                                      onTap: () {
+                                        ref.read(colorProvider.notifier).state =
+                                            SelectColor.yellow;
+                                      },
+                                    ),
+                                    SizedBox(width: 2),
+                                    CustomSelectColor(
+                                      color: Colors.red,
+                                      isActive: colorState == SelectColor.red
+                                          ? true
+                                          : false,
+                                      onTap: () {
+                                        ref.read(colorProvider.notifier).state =
+                                            SelectColor.red;
+                                      },
+                                    ),
+                                    SizedBox(width: 2),
+                                    CustomSelectColor(
+                                      color: Colors.black,
+                                      isActive: colorState == SelectColor.black
+                                          ? true
+                                          : false,
+                                      onTap: () {
+                                        ref.read(colorProvider.notifier).state =
+                                            SelectColor.black;
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Size",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xff777E90),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Consumer(
+                              builder: (context, ref, child) {
+                                final selectedSize = ref.watch(sizeProvider);
+                                return Row(
+                                  children: [
+                                    CustromSelectSize(
+                                      text: "S",
+                                      isActive:
+                                          selectedSize == SelectSize.Small,
+                                      onTap: () {
+                                        ref.read(sizeProvider.notifier).state =
+                                            SelectSize.Small;
+                                      },
+                                    ),
+                                    SizedBox(width: 5),
+                                    CustromSelectSize(
+                                      text: "M",
+                                      isActive:
+                                          selectedSize == SelectSize.medium,
+                                      onTap: () {
+                                        ref.read(sizeProvider.notifier).state =
+                                            SelectSize.medium;
+                                      },
+                                    ),
+                                    SizedBox(width: 5),
+                                    CustromSelectSize(
+                                      text: "L",
+                                      isActive:
+                                          selectedSize == SelectSize.large,
+                                      onTap: () {
+                                        ref.read(sizeProvider.notifier).state =
+                                            SelectSize.large;
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Divider(),
+                    ExpansionTile(
+                      shape: RoundedRectangleBorder(),
+                      maintainState: false,
+                      iconColor: Colors.black,
+                      tilePadding: EdgeInsets.all(0),
+                      title: Text(
+                        "Description",
                         style: TextStyle(
-                          fontSize: 26,
+                          fontSize: 16,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                    ],
-                  ),
-                  Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Color",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Color(0xff777E90),
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          Consumer(
-                            builder: (context, ref, child) {
-                              final colorState = ref.watch(colorProvider);
-                              return Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  CustomSelectColor(
-                                    color: Colors.yellow,
-                                    isActive: colorState == SelectColor.yellow
-                                        ? true
-                                        : false,
-                                    onTap: () {
-                                      ref.read(colorProvider.notifier).state =
-                                          SelectColor.yellow;
-                                    },
-                                  ),
-                                  SizedBox(width: 2),
-                                  CustomSelectColor(
-                                    color: Colors.red,
-                                    isActive: colorState == SelectColor.red
-                                        ? true
-                                        : false,
-                                    onTap: () {
-                                      ref.read(colorProvider.notifier).state =
-                                          SelectColor.red;
-                                    },
-                                  ),
-                                  SizedBox(width: 2),
-                                  CustomSelectColor(
-                                    color: Colors.black,
-                                    isActive: colorState == SelectColor.black
-                                        ? true
-                                        : false,
-                                    onTap: () {
-                                      ref.read(colorProvider.notifier).state =
-                                          SelectColor.black;
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Size",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Color(0xff777E90),
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          Consumer(
-                            builder: (context, ref, child) {
-                              final selectedSize = ref.watch(sizeProvider);
-                              return Row(
-                                children: [
-                                  CustromSelectSize(
-                                    text: "S",
-                                    isActive: selectedSize == SelectSize.Small,
-                                    onTap: () {
-                                      ref.read(sizeProvider.notifier).state =
-                                          SelectSize.Small;
-                                    },
-                                  ),
-                                  SizedBox(width: 5),
-                                  CustromSelectSize(
-                                    text: "M",
-                                    isActive: selectedSize == SelectSize.medium,
-                                    onTap: () {
-                                      ref.read(sizeProvider.notifier).state =
-                                          SelectSize.medium;
-                                    },
-                                  ),
-                                  SizedBox(width: 5),
-                                  CustromSelectSize(
-                                    text: "L",
-                                    isActive: selectedSize == SelectSize.large,
-                                    onTap: () {
-                                      ref.read(sizeProvider.notifier).state =
-                                          SelectSize.large;
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Divider(),
-                  ExpansionTile(
-                    shape: RoundedRectangleBorder(),
-                    maintainState: false,
-                    iconColor: Colors.black,
-                    tilePadding: EdgeInsets.all(0),
-                    title: Text(
-                      "Description",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
+                      children: [
+                        Text(
+                          productDetails.description,
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ],
                     ),
-                    children: [
-                      Text(
-                        productDetails.description,
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ],
-                  ),
-                  Divider(),
-                  SizedBox(height: 10),
-                  ExpansionTile(
-                    shape: RoundedRectangleBorder(),
-                    iconColor: Colors.black,
-                    tilePadding: EdgeInsets.all(0),
-                    collapsedIconColor: Colors.black,
-                    title: Text("Reviews"),
-                    children: productDetails.reviews.map((e) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListTile(
-                            contentPadding: EdgeInsets.all(0),
-                            leading: CircleAvatar(
-                              backgroundImage: NetworkImage(e.imgUrl),
-                            ),
-                            title: Text(e.user),
-                            subtitle: Row(
-                              children: List.generate(
-                                5,
-                                (index) => Icon(
-                                  e.rating > index
-                                      ? Icons.star_rate_rounded
-                                      : Icons.star_outline_rounded,
-                                  color: Color(0xff508A7B),
+                    Divider(),
+                    SizedBox(height: 10),
+                    ExpansionTile(
+                      shape: RoundedRectangleBorder(),
+                      iconColor: Colors.black,
+                      tilePadding: EdgeInsets.all(0),
+                      collapsedIconColor: Colors.black,
+                      title: Text("Reviews"),
+                      children: productDetails.reviews.map((e) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                              contentPadding: EdgeInsets.all(0),
+                              leading: CircleAvatar(
+                                backgroundImage: NetworkImage(e.imgUrl),
+                              ),
+                              title: Text(e.user),
+                              subtitle: Row(
+                                children: List.generate(
+                                  5,
+                                  (index) => Icon(
+                                    e.rating > index
+                                        ? Icons.star_rate_rounded
+                                        : Icons.star_outline_rounded,
+                                    color: Color(0xff508A7B),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Text(e.comment),
-                          SizedBox(height: 10),
-                        ],
-                      );
-                    }).toList(),
-                  ),
-                ],
+                            Text(e.comment),
+                            SizedBox(height: 10),
+                          ],
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
               ),
             ),
-          
+            SizedBox(height: 15),
           ],
         ),
       ),
