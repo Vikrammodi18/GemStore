@@ -20,7 +20,7 @@ class _ProductDetailsState extends ConsumerState<ProductDetails> {
     final h = MediaQuery.of(context).size.height;
     final w = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: CustomAppBar(titleText: "", context: context),
+      // appBar: CustomAppBar(titleText: "", context: context),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,11 +180,12 @@ class _ProductDetailsState extends ConsumerState<ProductDetails> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 10),
+                  Divider(),
                   ExpansionTile(
+                    shape: RoundedRectangleBorder(),
                     maintainState: false,
                     iconColor: Colors.black,
-                    
                     tilePadding: EdgeInsets.all(0),
                     title: Text(
                       "Description",
@@ -200,17 +201,46 @@ class _ProductDetailsState extends ConsumerState<ProductDetails> {
                       ),
                     ],
                   ),
+                  Divider(),
+                  SizedBox(height: 10),
                   ExpansionTile(
-                    maintainState: true,
+                    shape: RoundedRectangleBorder(),
                     iconColor: Colors.black,
                     tilePadding: EdgeInsets.all(0),
                     collapsedIconColor: Colors.black,
                     title: Text("Reviews"),
-                    children: [Text("reviews reviews reviews")],
+                    children: productDetails.reviews.map((e) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListTile(
+                            contentPadding: EdgeInsets.all(0),
+                            leading: CircleAvatar(
+                              backgroundImage: NetworkImage(e.imgUrl),
+                            ),
+                            title: Text(e.user),
+                            subtitle: Row(
+                              children: List.generate(
+                                5,
+                                (index) => Icon(
+                                  e.rating > index
+                                      ? Icons.star_rate_rounded
+                                      : Icons.star_outline_rounded,
+                                  color: Color(0xff508A7B),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Text(e.comment),
+                          SizedBox(height: 10),
+                        ],
+                      );
+                    }).toList(),
                   ),
                 ],
               ),
             ),
+          
           ],
         ),
       ),
